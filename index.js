@@ -33,7 +33,7 @@ function removeEntries(indices) {
   return loadData().then((data) => {
     // This is funky bc I'd prefer not to modify the array in place, but every
     // other option is needlessly complicated.
-    _.remove(data, indices);
+    _.pullAt(data, indices);
     return saveData(data);
   })
     .then(() => {
