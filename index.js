@@ -3,12 +3,60 @@
 const _ = require("lodash");
 const path = require("path");
 const Promise = require("bluebird");
-// const fs = Promise.promisifyAll(require("fs"));
 const jsonfile = Promise.promisifyAll(require("jsonfile"));
 
 const args = process.argv.slice(2);
+const cmd = args[0];
+const input = args.slice(1);
 const homedir = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
 const dbPath = process.env.PLANCAPSULEDATA || path.join(homedir, ".plancapsuledata");
+
+/************
+ * Commands *
+ ************/
+
+function addNew(entry) {
+  return loadData().then((data) => {
+    data.push(entry);
+    // return jsonfile.writeFileAsync(dbPath, data);
+    return saveData(data);
+  })
+    .then(() => {
+      console.log("Data successfully updated.");
+    })
+    .catch((err) => {
+      throw err;
+    });
+}
+
+function removeEntries(indices) {
+  return loadData().then((data) => {
+    // This is funky bc I'd prefer not to modify the array in place, but every
+    // other option is needlessly complicated.
+    _.remove(data, indices);
+    return saveData(data);
+  })
+    .then(() => {
+      console.log(`Removed specified entries. Here is your updated list:`);
+      listEntries();
+    });
+}
+
+function listEntries() {
+  return loadData().then((data) => {
+    let entryNo = 1;
+    data.forEach((entry) => {
+      console.log(`${entryNo++}. ${entry}\n`);
+    });
+  })
+    .catch((err) => {
+      throw err;
+    });
+}
+
+/*********************
+ * Utility functions *
+ *********************/
 
 function loadData() {
   return new Promise((resolve, reject) => {
@@ -30,7 +78,7 @@ function loadData() {
 }
 
 function saveData(data) {
-  return jsonfile.writeFileAsync(dbpath, data);
+  return jsonfile.writeFileAsync(dbPath, data);
 }
 
 function getIndices(numStrings) {
@@ -49,7 +97,7 @@ function mapAndFlatten(arr, func) {
 }
 
 function expandRange(arg) {
-  if (arg.indexof("-") != -1) {
+  if (arg.indexOf("-") != -1) {
     let endpts = arg.split("-").map(x => parseInt(x));
     return _.range(endpts[0], endpts[1]+1);
   }
@@ -65,66 +113,34 @@ function intOrBust(arg) {
 }
 
 function stripTrailingComma(arg) {
-  if (arg.indexof(",") === (arg.length - 1)) {
+  if (arg.indexOf(",") === (arg.length - 1)) {
     return arg.slice(-1);
   } else {
     return arg;
   }
 }
 
-function addNew(entry) {
-  return loadData().then((data) => {
-    data.push(entry);
-    // return jsonfile.writeFileAsync(dbPath, data);
-    return saveData(data);
-  })
-    .then(() => {
-      console.log("Data successfully updated.");
-    })
-    .catch((err) => {
-      throw err;
-    });
-}
+/********
+ * Main *
+ ********/
 
-function removeEntries(indices) {
-  // let indices = nums.map(x =>  x - 1 );
-  return loadData().then((data) => {
-    // This is funky bc I'd prefer not to modify the array in place, but every
-    // other option is needlessly complicated.
-    _.remove(data, indices);
-    return saveData(data);
-  })
-    .then(() => {
-      console.log(`Removed entries ${nums.join(",")}. Here is your updated list:`);
-      listEntries();
-    });
-}
+console.log("Command:", cmd);
+console.log("Arguments:", input);
 
-function listEntries() {
-  return loadData().then((data) => {
-    let entryNo = 1;
-    data.forEach((entry) => {
-      console.log(`${entryNo++}. ${entry}\n`);
-    });
-  })
-    .catch((err) => {
-      throw err;
-    });
-}
-
-switch (args[0]) {
+// switch (args[0]) {
+switch (cmd) {
   case "add":
-    let entry = args.slice(1).join(" ");
-    addNew(entry);
+    // let entry = args.slice(1).join(" ");
+    addNew(input);
     break;
   case "remove":
-    let toRemove = args.slice(1);
-    let indices = getIndices(toRemove);
+    // let toRemove = args.slice(1);
+    let indices = getIndices(input);
     removeEntries(indices);
     break;
   case "list":
     listEntries();
     break;
   default:
-    console.log(`Unrecognized argument: ${args[0]}`);
+    console.log(`Unrecognized argument: ${cmd}`);
 }
