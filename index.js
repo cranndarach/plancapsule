@@ -83,10 +83,15 @@ function saveData(data) {
 
 function getIndices(numStrings) {
   let stripped = mapAndFlatten(numStrings, x => stripTrailingComma(x));
+  say("Stripped: ", stripped);
   let commaSplit = mapAndFlatten(stripped, x => x.split(",").map(y => y.trim()));
+  say("Comma split: ", commaSplit);
   let expanded = mapAndFlatten(commaSplit, x => expandRange(x));
+  say("Expanded: ", expanded);
   let nums = mapAndFlatten(expanded, x => intOrBust(x));
+  say("Nums: ", nums);
   let indices = nums.map(x => x - 1);
+  say("Indices: ", indices);
   return indices;
 }
 
@@ -100,6 +105,8 @@ function expandRange(arg) {
   if (arg.indexOf("-") != -1) {
     let endpts = arg.split("-").map(x => parseInt(x));
     return _.range(endpts[0], endpts[1]+1);
+  } else {
+    return arg;
   }
 }
 
@@ -114,11 +121,14 @@ function intOrBust(arg) {
 
 function stripTrailingComma(arg) {
   if (arg.indexOf(",") === (arg.length - 1)) {
-    return arg.slice(-1);
+    return arg.slice(0, -1);
   } else {
     return arg;
   }
 }
+
+// Bc console.log is long
+function say(...what) { console.log(...what); }
 
 /********
  * Main *
@@ -127,16 +137,13 @@ function stripTrailingComma(arg) {
 console.log("Command:", cmd);
 console.log("Arguments:", input);
 
-// switch (args[0]) {
 switch (cmd) {
   case "add":
-    // let entry = args.slice(1).join(" ");
     addNew(input);
     break;
   case "remove":
-    // let toRemove = args.slice(1);
-    let indices = getIndices(input);
-    removeEntries(indices);
+    // let indices = getIndices(input);
+    removeEntries(getIndices(input));
     break;
   case "list":
     listEntries();
