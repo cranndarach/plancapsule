@@ -18,7 +18,6 @@ const dbPath = process.env.PLANCAPSULEDATA || path.join(homedir, ".plancapsuleda
 function addNew(entry) {
   return loadData().then((data) => {
     data.push(entry);
-    // return jsonfile.writeFileAsync(dbPath, data);
     return saveData(data);
   })
     .then(() => {
@@ -82,9 +81,6 @@ function saveData(data) {
 }
 
 function getIndices(numString) {
-  // let stripped = mapAndFlatten(numStrings, x => stripTrailingComma(x));
-  // say("Stripped: ", stripped);
-  // let commaSplit = mapAndFlatten(stripped, x => x.split(",").map(y => y.trim()));
   let commaSplit = numString.split(",").map(x => x.trim());
   say("Comma split: ", commaSplit);
   let expanded = mapAndFlatten(commaSplit, x => expandRange(x));
@@ -143,7 +139,6 @@ switch (cmd) {
     addNew(input);
     break;
   case "remove":
-    // let indices = getIndices(input);
     removeEntries(getIndices(input));
     break;
   case "list":
