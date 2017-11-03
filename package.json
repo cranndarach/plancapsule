@@ -13,5 +13,9 @@
     "utility"
   ],
   "author": "R. Steiner",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "jsonfile": "^4.0.0"
+  }
 }

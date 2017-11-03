@@ -11,19 +11,27 @@ const dbPath = process.env.PLANCAPSULEDATA || path.join(homedir, ".plancapsuleda
 
 function loadData() {
   return new Promise((resolve, reject) => {
-    jsonfile.readFile(dbPath)
+    jsonfile.readFileAsync(dbPath)
       .then((data) => {
+        // let dataObj = JSON.parse(data);
         resolve(data);
       })
+    // .catch((err) => {
+    // .catch(ENOENT, (err) => {
+    // I guess this is for operational errors and not general exceptions.
+    // I need to read about the distinction, but the example says that fs
+    // errors will be caught with .error()
+      .error((err) => {
+        // if (err instanceof ENOENT) {
+        console.log("No data file found. Starting a new one.");
+        resolve([]);
+      })
       .catch((err) => {
-        if (err instanceof ENOENT) {
-          console.log("No data file found. Starting a new one.");
-          resolve([]);
-        } else {
+        // } else {
           // Don't want it to mess with anything if there's an unexpected error.
           // throw err;
           reject(err);
-        }
+        // }
       });
   });
 }
@@ -31,7 +39,7 @@ function loadData() {
 function addNew(entry) {
   return loadData().then((data) => {
     data.push(entry);
-    return jsonfile.writeFile(dbPath, data);
+    return jsonfile.writeFileAsync(dbPath, data);
   })
     .then(() => {
       console.log("Data successfully updated.");
@@ -47,10 +55,20 @@ function listEntries() {
     data.forEach((entry) => {
       console.log(`${entryNo++}. ${entry}\n`);
     })
-      .catch((err) => {
-        throw err;
-      });
-  });
+  })
+    .catch((err) => {
+      throw err;
+    });
 }
 
-
+switch (args[0]) {
+  case "add":
+    let entry = args.slice(1).join(" ");
+    addNew(entry);
+    break;
+  case "list":
+    listEntries();
+    break;
+  default:
+    console.log(`Unrecognized argument: ${args[0]}`);
+}
