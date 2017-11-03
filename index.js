@@ -7,7 +7,7 @@ const jsonfile = Promise.promisifyAll(require("jsonfile"));
 
 const args = process.argv.slice(2);
 const cmd = args[0];
-const input = args.slice(1);
+const input = args.slice(1).join(" ");
 const homedir = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
 const dbPath = process.env.PLANCAPSULEDATA || path.join(homedir, ".plancapsuledata");
 
@@ -81,10 +81,11 @@ function saveData(data) {
   return jsonfile.writeFileAsync(dbPath, data);
 }
 
-function getIndices(numStrings) {
-  let stripped = mapAndFlatten(numStrings, x => stripTrailingComma(x));
-  say("Stripped: ", stripped);
-  let commaSplit = mapAndFlatten(stripped, x => x.split(",").map(y => y.trim()));
+function getIndices(numString) {
+  // let stripped = mapAndFlatten(numStrings, x => stripTrailingComma(x));
+  // say("Stripped: ", stripped);
+  // let commaSplit = mapAndFlatten(stripped, x => x.split(",").map(y => y.trim()));
+  let commaSplit = numString.split(",").map(x => x.trim());
   say("Comma split: ", commaSplit);
   let expanded = mapAndFlatten(commaSplit, x => expandRange(x));
   say("Expanded: ", expanded);
