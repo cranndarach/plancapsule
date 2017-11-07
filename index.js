@@ -54,9 +54,9 @@ function listEntries() {
 }
 
 function showHelp() {
-  console.log("plancapsule - hold onto your brilliant ideas until you can act on them");
+  console.log("plancapsule - hold onto your brilliant ideas until you can act on them\n");
   for (const cmd in helpText) {
-    console.log(`${prop}\t${helpText.prop}`);
+    console.log(`${cmd}\t${helpText[cmd]}`);
   }
 }
 
@@ -146,8 +146,8 @@ var helpText = {
  * Main *
  ********/
 
-console.log("Command:", cmd);
-console.log("Arguments:", input);
+// console.log("Command:", cmd);
+// console.log("Arguments:", input);
 
 switch (cmd) {
   case "add":
