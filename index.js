@@ -60,6 +60,10 @@ function showHelp() {
   }
 }
 
+function showVersion() {
+  console.log(`plancapsule v${process.env.npm_package_version}`);
+}
+
 /*************
  * Utilities *
  *************/
@@ -139,7 +143,7 @@ var helpText = {
   "remove": "Delete specified entries from your list. Format: `plancapsule remove 1, 3, 5-9`",
   "list": "List all your entries in human-readable form. Format: `plancapsule list`",
   "help": "Print this help text. Format: `plancapsule help`",
-  "version": "Print the version. Format: `plancapsule version`"
+  "version": "Print the version number. Format: `plancapsule version`"
 };
 
 /********
@@ -158,6 +162,11 @@ switch (cmd) {
     break;
   case "list":
     listEntries();
+    break;
+  case "version":
+  case "-v":
+  case "--version":
+    showVersion();
     break;
   default:
     console.log(`Unrecognized argument: ${cmd}`);
