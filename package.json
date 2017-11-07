@@ -1,6 +1,6 @@
 {
   "name": "plancapsule",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Save your thoughts and come back to them later.",
   "main": "index.js",
   "scripts": {
