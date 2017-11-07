@@ -4,6 +4,7 @@ const _ = require("lodash");
 const path = require("path");
 const Promise = require("bluebird");
 const jsonfile = Promise.promisifyAll(require("jsonfile"));
+const version = require("./package.json").version;
 
 const args = process.argv.slice(2);
 const cmd = args[0];
@@ -61,7 +62,8 @@ function showHelp() {
 }
 
 function showVersion() {
-  console.log(`plancapsule v${process.env.npm_package_version}`);
+  // console.log(`plancapsule v${process.env.npm_package_version}`);
+  console.log(`plancapsule v${version}`);
 }
 
 /*************
@@ -139,7 +141,7 @@ function stripTrailingComma(arg) {
 function say(...what) { console.log(...what); }
 
 var helpText = {
-  "add": "Add a new entry to your list. Format: `plancapsule add My new idea for a brighter future`",
+  "add": "Add a new entry to your list. Format: `plancapsule add My new idea for a better future`",
   "remove": "Delete specified entries from your list. Format: `plancapsule remove 1, 3, 5-9`",
   "list": "List all your entries in human-readable form. Format: `plancapsule list`",
   "help": "Print this help text. Format: `plancapsule help`",
