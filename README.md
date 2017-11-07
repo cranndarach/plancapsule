@@ -7,11 +7,37 @@ add your new plan, and go back to whatever you were doing. Then, sometime in the
 
 Not recommended for use in the shower.
 
-## To-do
+## Install
 
-* add `bin/plancapsule` so that it can be called without using `node index.js`
-* add "help" command that lists args
-* Publish to npm
+Requires node.js and node package manager (npm).
+
+### via npm
+
+```
+npm install --global plancapsule
+```
+
+### From source
+
+Clone this repository:
+
+```
+git clone https://github.com/cranndarach/plancapsule.git
+```
+
+To install normally (so that you can use `plancapsule` from anywhere in the terminal):
+
+```
+cd plancapsule
+npm install -g
+```
+
+To install just the dependencies (for development):
+
+```
+cd plancapsule
+npm install
+```
 
 ## License
 
