@@ -1,5 +1,7 @@
 # Plan Capsule
 
+[![npm version](https://badge.fury.io/js/plancapsule.svg)](https://badge.fury.io/js/plancapsule)
+
 >It's like a time capsule for your plans!
 
 Little command-line utility for quickly writing down the brilliant ideas you come up with when you have much more pressing things to be doing. Open it up,
