@@ -53,9 +53,16 @@ function listEntries() {
     });
 }
 
-/*********************
- * Utility functions *
- *********************/
+function showHelp() {
+  console.log("plancapsule - hold onto your brilliant ideas until you can act on them");
+  for (const cmd in helpText) {
+    console.log(`${prop}\t${helpText.prop}`);
+  }
+}
+
+/*************
+ * Utilities *
+ *************/
 
 function loadData() {
   return new Promise((resolve, reject) => {
@@ -127,6 +134,14 @@ function stripTrailingComma(arg) {
 // Bc console.log is long
 function say(...what) { console.log(...what); }
 
+var helpText = {
+  "add": "Add a new entry to your list. Format: `plancapsule add My new idea for a brighter future`",
+  "remove": "Delete specified entries from your list. Format: `plancapsule remove 1, 3, 5-9`",
+  "list": "List all your entries in human-readable form. Format: `plancapsule list`",
+  "help": "Print this help text. Format: `plancapsule help`",
+  "version": "Print the version. Format: `plancapsule version`"
+};
+
 /********
  * Main *
  ********/
@@ -146,4 +161,8 @@ switch (cmd) {
     break;
   default:
     console.log(`Unrecognized argument: ${cmd}`);
+  case "help":
+  case "-h":
+  case "--help":
+    showHelp();
 }
